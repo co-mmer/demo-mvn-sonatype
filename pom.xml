@@ -26,13 +26,13 @@
       <name>Leonhard Emmert</name>
       <email>commer.feedback@gmail.com</email>
       <organization>com.github.co-mmer</organization>
-      <organizationUrl>https://github.com/co-mmer/</organizationUrl>
+      <organizationUrl>https://github.com/co-mmer</organizationUrl>
     </developer>
   </developers>
 
   <issueManagement>
     <system>github</system>
-    <url>https://github.com/co-mmer/java-demo-mvn-sonatype/issues</url>
+    <url>https://github.com/co-mmer/demo-mvn-sonatype/issues</url>
   </issueManagement>
 
   <scm>
@@ -50,9 +50,10 @@
 
   <properties>
     <java.version>17</java.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <sonar.organization>com.github.co-mmer</sonar.organization>
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-    <sonar.projectKey>demo-sonatype</sonar.projectKey>
+    <sonar.projectKey>co-mmer_demo-sonatype</sonar.projectKey>
   </properties>
 
   <dependencies>
@@ -74,12 +75,6 @@
     </dependency>
 
     <dependency>
-      <groupId>org.jacoco</groupId>
-      <artifactId>jacoco-maven-plugin</artifactId>
-      <version>0.8.12</version>
-    </dependency>
-
-    <dependency>
       <groupId>org.apache.maven.plugins</groupId>
       <artifactId>maven-source-plugin</artifactId>
       <version>3.3.1</version>
@@ -92,19 +87,6 @@
       <id>sonatypeDeploy</id>
       <build>
         <plugins>
-
-          <plugin>
-            <groupId>org.sonatype.plugins</groupId>
-            <artifactId>nexus-staging-maven-plugin</artifactId>
-            <version>1.7.0</version>
-            <extensions>true</extensions>
-            <configuration>
-              <serverId>ossrh</serverId>
-              <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
-              <autoReleaseAfterClose>true</autoReleaseAfterClose>
-            </configuration>
-          </plugin>
-
           <plugin>
             <groupId>org.sonatype.central</groupId>
             <artifactId>central-publishing-maven-plugin</artifactId>
@@ -112,10 +94,10 @@
             <extensions>true</extensions>
             <configuration>
               <publishingServerId>central</publishingServerId>
+              <tokenAuth>true</tokenAuth>
               <waitUntil>published</waitUntil>
             </configuration>
           </plugin>
-
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-source-plugin</artifactId>
@@ -128,7 +110,6 @@
               </execution>
             </executions>
           </plugin>
-
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
@@ -142,7 +123,6 @@
               </execution>
             </executions>
           </plugin>
-
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-gpg-plugin</artifactId>
@@ -154,10 +134,15 @@
                 <goals>
                   <goal>sign</goal>
                 </goals>
+                <configuration>
+                  <gpgArguments>
+                    <arg>--pinentry-mode</arg>
+                    <arg>loopback</arg>
+                  </gpgArguments>
+                </configuration>
               </execution>
             </executions>
           </plugin>
-
         </plugins>
       </build>
     </profile>
@@ -166,15 +151,14 @@
       <id>coverageReport</id>
       <build>
         <plugins>
-
           <plugin>
             <artifactId>maven-surefire-plugin</artifactId>
             <version>3.5.1</version>
           </plugin>
-
           <plugin>
             <groupId>org.jacoco</groupId>
             <artifactId>jacoco-maven-plugin</artifactId>
+            <version>0.8.12</version>
             <executions>
               <execution>
                 <id>prepare-agent</id>
@@ -204,29 +188,9 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>com.diffplug.spotless</groupId>
-        <artifactId>spotless-maven-plugin</artifactId>
-        <version>2.43.0</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>check</goal>
-            </goals>
-            <phase>validate</phase>
-          </execution>
-        </executions>
-        <configuration>
-          <java>
-            <googleJavaFormat/>
-          </java>
-        </configuration>
-      </plugin>
-
-      <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.13.0</version>
       </plugin>
-
     </plugins>
   </build>
 </project>
